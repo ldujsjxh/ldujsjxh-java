@@ -27,14 +27,14 @@
             %d{yyyy-MM-dd}会自动替代为日期，如2017-06-30
                 -->
         <!-- rollingFile附加器,滚动日志文件,fileName是当前日志文件,filePattern是达到一定的条件之后,重命名的文件格式 -->
-        <RollingFile name="rollingFile" fileName="logs/association.log"
-                     filePattern="logs/association-%d{yyyy-MM-dd}.log">
+        <RollingFile name="rollingFile" fileName="../ldujsjxh-java-logs/association.log"
+                     filePattern="../ldujsjxh-java-logs/association-%d{yyyy-MM-dd}.log">
             <!-- 只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <!-- 日志输出的格式 -->
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss}$%-5level$%class{36}$%L$%M$%msg%xEx%n"/>
             <Policies>
-                <SizeBasedTriggeringPolicy size="128 MB"/>
+                <SizeBasedTriggeringPolicy size="8 MB"/>
 
             </Policies>
             <!--
