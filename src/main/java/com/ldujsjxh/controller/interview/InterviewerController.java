@@ -2,12 +2,14 @@ package com.ldujsjxh.controller.interview;
 
 import com.ldujsjxh.domain.interview.CandidateBean;
 import com.ldujsjxh.service.interview.InterviewerService;
+import com.ldujsjxh.utils.RequestInfoUtils;
 import com.ldujsjxh.vo.interview.IntervieweeInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -24,6 +26,9 @@ import java.util.List;
 public class InterviewerController {
     @Autowired
     private InterviewerService interviewerService;
+    @Autowired
+    private HttpServletRequest request;
+
 
     /**
      * 管理员登录面试控制台时, 需要口令验证, 这里判断管理员口令是否正确
@@ -34,8 +39,10 @@ public class InterviewerController {
     @RequestMapping(value = "/java/interviewAdmin", method = RequestMethod.POST)
     public String isAdmin(String adminPasswd) {
         if (adminPasswd.equals("jsjxh210")) {
+            log.info("登录面试控制台:"+"^"+"设备信息:"+RequestInfoUtils.getIPAndDeviceInfo(request));
             return "console";
         } else if (adminPasswd.equals("interviewScore")) {
+            log.info("登录打分界面"+"^"+"设备信息:"+RequestInfoUtils.getIPAndDeviceInfo(request));
             return "interview";
         } else {
             return "no";
@@ -79,9 +86,11 @@ public class InterviewerController {
     public String nextCandidate(String candidateId) {
         try {
             interviewerService.nextCandidate(candidateId);
+            log.info("更新面试等候者:"+candidateId);
             return "yes";
 
         } catch (Exception e) {
+            log.error(e.toString());
             return "error";
         }
 
@@ -99,7 +108,24 @@ public class InterviewerController {
             interviewerService.score(candidateId, score);
             return "yes";
         } catch (Exception e) {
-            System.out.println(e);
+            log.error(e.toString());
+            return "error";
+        }
+    }
+
+    /**
+     * 根据id删除报名者信息
+     * @param candidateId
+     * @return
+     */
+    @RequestMapping(value = "/java/deleteCondidatesById", method = RequestMethod.POST)
+    public String delCandidate(int candidateId) {
+        try {
+            interviewerService.delCandidate(candidateId);
+            log.info("删除报名者信息:"+candidateId);
+            return "yes";
+        } catch (Exception e) {
+            log.error(e.toString());
             return "error";
         }
     }

@@ -2,6 +2,7 @@ package com.ldujsjxh.controller.interview;
 
 import com.ldujsjxh.domain.interview.CandidateBean;
 import com.ldujsjxh.service.interview.InterviewService;
+import com.ldujsjxh.utils.RequestInfoUtils;
 import com.ldujsjxh.vo.interview.IntervieweeVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -20,6 +22,8 @@ import java.util.List;
 public class InterviewController {
     @Autowired
     private InterviewService intervieService;
+    @Autowired
+    private HttpServletRequest request;
 
 
     /**
@@ -46,9 +50,10 @@ public class InterviewController {
         String isExisted = "no";
         try {
             isExisted = intervieService.addCandidate(candidateBean);
+            log.info("新的面试者:"+candidateBean.getCandidateId()+"^"+"设备信息:"+ RequestInfoUtils.getIPAndDeviceInfo(request));
             return isExisted;
         } catch (Exception e) {
-            System.out.println(e);
+            log.error(e.toString());
             return isExisted;
         }
 

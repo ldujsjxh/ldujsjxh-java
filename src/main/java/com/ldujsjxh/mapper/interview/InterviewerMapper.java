@@ -2,6 +2,7 @@ package com.ldujsjxh.mapper.interview;
 
 import com.ldujsjxh.domain.interview.CandidateBean;
 import com.ldujsjxh.vo.interview.IntervieweeInfoVo;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -69,4 +70,12 @@ public interface InterviewerMapper {
     @Update("UPDATE candidates set score = #{scoreStr}\n" +
             "WHERE candidate_id = #{candidateId}")
     void updateScoreById(String candidateId, String scoreStr);
+
+    /**
+     * 根据id删除报名者个人信息
+     * @param candidateId
+     */
+    @Delete("delete FROM candidates \n" +
+            "where candidate_id = #{candidateId}")
+    void deleteCandidateById(int candidateId);
 }

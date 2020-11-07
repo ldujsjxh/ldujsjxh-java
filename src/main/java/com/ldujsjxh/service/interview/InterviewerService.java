@@ -101,4 +101,12 @@ public class InterviewerService {
             return "cadidateIdNotFound";
         }
     }
+
+    /**
+     * 根据id删除报名者信息
+     * @param candidateId
+     */
+    public void delCandidate(int candidateId) {
+        interviewerMapper.deleteCandidateById(candidateId);
+    }
 }
